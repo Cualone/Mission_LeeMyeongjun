@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -43,6 +44,29 @@ public class LikeablePersonService {
         likeablePersonRepository.save(likeablePerson); // 저장
 
         return RsData.of("S-1", "입력하신 인스타유저(%s)를 호감상대로 등록되었습니다.".formatted(username), likeablePerson);
+    }
+
+
+    @Transactional
+    public RsData<Void> deleteById(Integer id) {
+        // id로 해당 LikeablePerson 엔티티를 조회
+        LikeablePerson likeablePerson = likeablePersonRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 id의 호감 상대를 찾을 수 없습니다."));
+
+        likeablePersonRepository.delete(likeablePerson); // 삭제
+
+        return RsData.of("S-4", "삭제되었습니다");
+    }
+
+    public void deleteLikeablePersonById(Integer id) {
+        Optional<LikeablePerson> likeablePersonOptional = likeablePersonRepository.findById(id);
+
+        if (likeablePersonOptional.isPresent()) {
+            LikeablePerson likeablePerson = likeablePersonOptional.get();
+            likeablePersonRepository.delete(likeablePerson);
+        } else {
+            throw new IllegalArgumentException("해당 id에 해당하는 LikeablePerson 객체가 존재하지 않습니다.");
+        }
     }
 
     public List<LikeablePerson> findByFromInstaMemberId(Long fromInstaMemberId) {
