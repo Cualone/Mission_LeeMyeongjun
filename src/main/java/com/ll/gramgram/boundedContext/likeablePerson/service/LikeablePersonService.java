@@ -31,12 +31,18 @@ public class LikeablePersonService {
             return RsData.of("F-1", "본인을 호감상대로 등록할 수 없습니다.");
         }
 
+
         InstaMember fromInstaMember = member.getInstaMember();
         InstaMember toInstaMember = instaMemberService.findByUsernameOrCreate(username).getData();
 
+        List<LikeablePerson> existingLikeablePeople = likeablePersonRepository.findByFromInstaMemberIdAndToInstaMemberId(fromInstaMember.getId(), toInstaMember.getId());
+        if (!existingLikeablePeople.isEmpty()) {
+            return RsData.of("F-4", "%s은(는) 이미 호감표시를 한 상대입니다.".formatted(toInstaMember.getUsername()));
+        }
+
         List<LikeablePerson> likeablePeople = likeablePersonRepository.findByFromInstaMemberId(fromInstaMember.getId());
         if (likeablePeople.size() >= AppConfig.getLikeablePersonFromMax()) {
-            return RsData.of("F-3", "호감상대는 최대 3명까지 등록 가능합니다.");
+            return RsData.of("F-3", "호감상대는 최대 10명까지 등록 가능합니다.");
         }
 
         LikeablePerson likeablePerson = LikeablePerson
