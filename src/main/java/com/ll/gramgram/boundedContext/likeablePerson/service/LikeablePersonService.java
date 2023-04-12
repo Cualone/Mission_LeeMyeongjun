@@ -6,6 +6,7 @@ import com.ll.gramgram.boundedContext.instaMember.service.InstaMemberService;
 import com.ll.gramgram.boundedContext.likeablePerson.entity.LikeablePerson;
 import com.ll.gramgram.boundedContext.likeablePerson.repository.LikeablePersonRepository;
 import com.ll.gramgram.boundedContext.member.entity.Member;
+import com.ll.gramgram.base.appConfig.AppConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +33,11 @@ public class LikeablePersonService {
 
         InstaMember fromInstaMember = member.getInstaMember();
         InstaMember toInstaMember = instaMemberService.findByUsernameOrCreate(username).getData();
+
+        List<LikeablePerson> likeablePeople = likeablePersonRepository.findByFromInstaMemberId(fromInstaMember.getId());
+        if (likeablePeople.size() >= AppConfig.getLikeablePersonFromMax()) {
+            return RsData.of("F-3", "호감상대는 최대 3명까지 등록 가능합니다.");
+        }
 
         LikeablePerson likeablePerson = LikeablePerson
                 .builder()
