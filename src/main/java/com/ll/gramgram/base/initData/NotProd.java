@@ -6,7 +6,6 @@ import com.ll.gramgram.boundedContext.likeablePerson.service.LikeablePersonServi
 import com.ll.gramgram.boundedContext.member.entity.Member;
 import com.ll.gramgram.boundedContext.member.service.MemberService;
 import com.ll.gramgram.standard.util.Ut;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
