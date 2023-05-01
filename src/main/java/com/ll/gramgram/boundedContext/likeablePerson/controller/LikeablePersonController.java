@@ -14,7 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/likeablePerson")
@@ -48,20 +50,6 @@ public class LikeablePersonController {
         return rq.redirectWithMsg("/likeablePerson/list", createRsData);
     }
 
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/list")
-    public String showList(Model model) {
-        InstaMember instaMember = rq.getMember().getInstaMember();
-
-        // 인스타인증을 했는지 체크
-        if (instaMember != null) {
-            // 해당 인스타회원이 좋아하는 사람들 목록
-            List<LikeablePerson> likeablePeople = instaMember.getFromLikeablePeople();
-            model.addAttribute("likeablePeople", likeablePeople);
-        }
-
-        return "usr/likeablePerson/list";
-    }
 
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/{id}")
