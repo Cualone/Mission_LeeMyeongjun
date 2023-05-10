@@ -42,6 +42,7 @@ public class Notification extends BaseEntity {
     public String getCreateDateAfterStrHuman() {
         return Ut.time.diffFormat1Human(LocalDateTime.now(), getCreateDate());
     }
+
     public boolean isHot() {
         // 만들어진지 60분이 안되었다면 hot 으로 설정
         return getCreateDate().isAfter(LocalDateTime.now().minusMinutes(60));

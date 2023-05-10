@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class NotificationEventListener {
     private final NotificationService notificationService;
+
     @EventListener
     public void listen(EventAfterLike event) {
         LikeablePerson likeablePerson = event.getLikeablePerson();
@@ -25,5 +26,8 @@ public class NotificationEventListener {
 
     @EventListener
     public void listen(EventAfterModifyAttractiveType event) {
+        LikeablePerson likeablePerson = event.getLikeablePerson();
+
+        notificationService.makeModifyAttractive(likeablePerson, event.getOldAttractiveTypeCode());
     }
 }
